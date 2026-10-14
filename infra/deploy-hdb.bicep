@@ -7,6 +7,12 @@ param location string = resourceGroup().location
 @description('Unique name for the HorizonDB cluster.')
 param clusterName string = 'horizondb-@lab.LabInstance.GlobalId'
 
+@description('Unique name for the Foundry service.')
+param foundryName string = 'foundry-@lab.LabInstance.GlobalId'
+
+@description('Unique name for the Foundry Project ervice.')
+param foundryProjectName string = '${foundryName}-project'
+
 @description('The version of PostgreSQL to use.')
 param postgresVersion string = '17'
 
@@ -21,13 +27,50 @@ var administratorLogin = 'LabUser' //'@lab.User.Id'
 
 @secure()
 @description('Auto-generated admin password.')
-param administratorLoginPassword string = 'Pa$$w0rd'
+param administratorLoginPassword string = '@lab.VirtualMachine(Win11-Pro-Base).Password'
 
+@description('PostgreSQL extensions to allow on the HorizonDB cluster.')
+param allowedExtensions array = [
+  'azure_ai'
+  'vector'
+  'age'
+  'pg_diskann'
+  'pg_textsearch'
+]
+
+@description('PostgreSQL shared_preload_libraries to allow on the HorizonDB cluster.')
+param sharedPreloadLibraries array = [
+  'age'
+  'pg_textsearch'
+]
+
+resource horizonDbParameterGroup 'Microsoft.HorizonDb/parameterGroups@2026-05-01-preview' = {
+  name: '${clusterName}-parameters'
+  location: location
+
+  properties: {
+    description: 'Parameter group for ${clusterName}'
+    pgVersion: int(postgresVersion)
+    applyImmediately: true
+
+    parameters: [
+      {
+        name: 'azure.extensions'
+        value: join(allowedExtensions, ',')
+      }
+      {
+        name: 'shared_preload_libraries'
+        value: join(sharedPreloadLibraries, ',')
+      }
+    ]
+  }
+}
 
 @description('Creates a HorizonDB Cluster.')
 resource horizonDb 'Microsoft.HorizonDb/clusters@2026-05-01-preview' = {
   name: clusterName
   location: location
+
   properties: {
     administratorLogin: administratorLogin
     administratorLoginPassword: administratorLoginPassword
@@ -38,5 +81,114 @@ resource horizonDb 'Microsoft.HorizonDb/clusters@2026-05-01-preview' = {
     // Enable integrated AI Model Management
     //aiModelManagement: 'Enabled'
     //aiModelManagement: 0 // 0 to Enable
+    parameterGroup: {
+      //applyImmediately: true
+      id: horizonDbParameterGroup.id
+    }
+
+  }
+
+}
+
+@description('Creates a Microsoft Foundry resource.')
+resource foundry 'Microsoft.CognitiveServices/accounts@2026-07-01' = {
+  name: foundryName
+  location: location
+  kind: 'AIServices'
+  sku: {
+    name: 'S0'
+  }
+
+  identity: {
+    type: 'SystemAssigned'
+  }
+  properties: {
+    customSubDomainName: foundryName
+    publicNetworkAccess: 'Enabled'
+    // Allow Foundry projects underneath this resource
+    allowProjectManagement: true
+  }
+}
+
+resource foundryProject 'Microsoft.CognitiveServices/accounts/projects@2026-07-01' = {
+  name: foundryProjectName
+  parent: foundry
+  location: location
+
+  identity: {
+    type: 'SystemAssigned'
+  }
+
+  properties: {
+    displayName: foundryProjectName
+    description: 'Foundry AI project for HorizonDB'
+  }
+}
+
+@description('Creates an embedding deployment for the Foundry service.')
+resource foundryEmbeddingDeployment 'Microsoft.CognitiveServices/accounts/deployments@2026-07-01' = {
+  name: 'text-embedding-3-small'
+  parent: foundry
+
+  dependsOn: [
+    foundryProject
+  ]
+
+  sku: {
+    name: 'GlobalStandard'
+    capacity: 10
+  }
+  properties: {
+    model: {
+      // Make the quota higher for the deployment
+      name: 'text-embedding-3-small'
+      version: '1'
+      format: 'OpenAI'
+    }
+  }
+}
+
+@description('Creates a GPT-5.4 chat deployment for the Foundry service.')
+resource foundryChatDeployment 'Microsoft.CognitiveServices/accounts/deployments@2026-07-01' = {
+  name: 'gpt-5.4'
+  parent: foundry
+
+  dependsOn: [
+    foundryEmbeddingDeployment
+  ]
+
+  sku: {
+    name: 'GlobalStandard'
+    capacity: 10
+  }
+  properties: {
+    model: {
+      name: 'gpt-5.4'
+      version: '2026-03-05'
+      format: 'OpenAI'
+    }
+  }
+}
+
+@description('Creates a Cohere reranker deployment.')
+resource foundryRerankerDeployment 'Microsoft.CognitiveServices/accounts/deployments@2026-07-01' = {
+  name: 'Cohere-rerank-v4.0-fast'
+  parent: foundry
+
+  dependsOn: [
+    foundryChatDeployment
+  ]
+
+  sku: {
+    name: 'GlobalStandard'
+    capacity: 1500
+  }
+
+  properties: {
+    model: {
+      name: 'Cohere-rerank-v4.0-fast'
+      version: '1'
+      format: 'Cohere'
+    }
   }
 }
