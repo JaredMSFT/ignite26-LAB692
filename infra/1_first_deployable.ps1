@@ -1,3 +1,4 @@
+<#
 First Displayable
 
 Apply HorizonDB Parameter Group
@@ -8,6 +9,7 @@ Blocking	No
 Timeout	10 Minutes
 Retries	0
 Error Action	Log
+#>
 
 $subId = '@lab.CloudSubscription.Id'
 $rgId = '@lab.CloudResourceGroup(ResourceGroup1).Name'

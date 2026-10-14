@@ -26,7 +26,7 @@ param replicaCount int = 2
 var administratorLogin = '@lab.VirtualMachine(Win11-Pro-Base).Username' //LabUser
 
 @secure()
-@description('Auto-generated admin password.')
+@description('Admin password for the cluster.')
 param administratorLoginPassword string = '@lab.VirtualMachine(Win11-Pro-Base).Password'
 
 @description('PostgreSQL extensions to allow on the HorizonDB cluster.')
