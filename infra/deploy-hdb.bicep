@@ -23,7 +23,7 @@ param vCores int = 2
 param replicaCount int = 2
 
 @description('Admin username for the cluster.')
-var administratorLogin = 'LabUser' //'@lab.User.Id'
+var administratorLogin = '@lab.VirtualMachine(Win11-Pro-Base).Username' //LabUser
 
 @secure()
 @description('Auto-generated admin password.')
