@@ -1,6 +1,3 @@
-@description('Random suffix used to keep resource names unique per deployment.')
-param nameSuffix string = uniqueString(newGuid())
-
 @description('Location for all resources.')
 param location string = resourceGroup().location
 // australiaeast,canadacentral,centralus,eastus,germanywestcentral,indiasouthcentral
@@ -8,7 +5,7 @@ param location string = resourceGroup().location
 //,italynorth,polandcentral,uaenorth,uksouth
 
 @description('Unique name for the HorizonDB cluster.')
-param clusterName string = 'horizondb-lab-${location}-${nameSuffix}'
+param clusterName string = 'horizondb-@lab.LabInstance.GlobalId'
 
 @description('The version of PostgreSQL to use.')
 param postgresVersion string = '17'
@@ -20,12 +17,11 @@ param vCores int = 2
 param replicaCount int = 2
 
 @description('Admin username for the cluster.')
-var administratorLogin = 'labUser'
+var administratorLogin = 'LabUser' //'@lab.User.Id'
 
 @secure()
 @description('Auto-generated admin password.')
-param administratorLoginPassword string
-
+param administratorLoginPassword string = 'Pa$$w0rd'
 
 
 @description('Creates a HorizonDB Cluster.')
@@ -41,6 +37,6 @@ resource horizonDb 'Microsoft.HorizonDb/clusters@2026-05-01-preview' = {
     version: postgresVersion
     // Enable integrated AI Model Management
     //aiModelManagement: 'Enabled'
-    aiModelManagement: 0 // 0 to Enable
+    //aiModelManagement: 0 // 0 to Enable
   }
 }
