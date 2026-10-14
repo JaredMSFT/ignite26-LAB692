@@ -10,7 +10,7 @@ Retries	0
 Error Action	Log
 
 $subId = '@lab.CloudSubscription.Id'
-$rgId = 'ResourceGroup1'
+$rgId = '@lab.CloudResourceGroup(ResourceGroup1).Name'
 $hdbId = 'horizondb-@lab.LabInstance.GlobalId'
 $hdbparamsId = "$hdbId-parameters"
 
