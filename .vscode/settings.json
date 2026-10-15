@@ -1,0 +1,14 @@
+{
+    "pgsql.connections":  [
+
+        { 
+            "authenticationType":  "SqlLogin",
+            "database":  "postgres",
+            "port":  5432,
+            "profileName":  "Ignite Lab HorizonDB", 
+            "server":  "FQDN",
+            "sslmode":  "require",
+            "user":  "LabUser"
+        }
+    ]
+}
