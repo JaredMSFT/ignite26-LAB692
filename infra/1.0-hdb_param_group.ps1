@@ -1,6 +1,5 @@
 <#
 First Displayable
-
 Apply HorizonDB Parameter Group
 Execute Script in Cloud Platform
 Language	PowerShell

@@ -30,13 +30,13 @@ New-Item -ItemType Directory -Path $vscodeDirectory -Force | Out-Null
 $settings = @{
     "pgsql.connections" = @(
         @{
+            authenticationType = "SqlLogin"
+            database           = "postgres"
+            port               = 5432
             profileName        = "Ignite Lab HorizonDB"
             server             = "$fqdn"
-            port               = 5432
-            database           = "postgres"
-            user               = "LabUser"
-            authenticationType = "SqlLogin"
             sslmode            = "require"
+            user               = "LabUser"
         }
     )
 }
