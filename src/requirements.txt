@@ -12,4 +12,5 @@ requests==2.32.3
 agent-framework-core==1.11.0
 agent-framework-openai==1.11.0
 mem0ai==2.0.20
+mem0ai[nlp]
 azure-identity>=1.24.0

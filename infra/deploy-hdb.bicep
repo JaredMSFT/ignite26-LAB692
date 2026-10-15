@@ -153,7 +153,7 @@ resource foundryEmbeddingDeployment 'Microsoft.CognitiveServices/accounts/deploy
 
   sku: {
     name: 'GlobalStandard'
-    capacity: 1000
+    capacity: 3000
   }
   properties: {
     model: {
