@@ -2,9 +2,8 @@
 Git Clone
 Execute Script in Virtual Machine
 Machine	Win11-Pro-Base
-Language	Windows Command Shell
+Language	PowerShell
 Blocking	Yes
-Delay	60 Seconds
 Timeout	5 Minutes
 Retries	0
 Error Action	Log

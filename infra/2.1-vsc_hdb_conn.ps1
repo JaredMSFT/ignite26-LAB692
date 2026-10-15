@@ -4,7 +4,6 @@ Execute Script in Virtual Machine
 Machine	Win11-Pro-Base
 Language	PowerShell
 Blocking	No
-Delay	120 Seconds
 Timeout	5 Minutes
 Retries	0
 Error Action	Log
