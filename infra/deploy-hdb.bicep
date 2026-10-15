@@ -153,7 +153,7 @@ resource foundryEmbeddingDeployment 'Microsoft.CognitiveServices/accounts/deploy
 
   sku: {
     name: 'GlobalStandard'
-    capacity: 10
+    capacity: 1000
   }
   properties: {
     model: {
@@ -176,7 +176,7 @@ resource foundryChatDeployment 'Microsoft.CognitiveServices/accounts/deployments
 
   sku: {
     name: 'GlobalStandard'
-    capacity: 10
+    capacity: 1000
   }
   properties: {
     model: {
