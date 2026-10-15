@@ -16,13 +16,22 @@ $user = '@lab.CloudPortalCredential(User1).Username'
 $pass = '@lab.CloudPortalCredential(User1).Password'
 $tenant = '@lab.CloudSubscription.TenantId'
 
-$prev = $ErrorActionPreference
-$ErrorActionPreference = 'Continue'
-& az login --username $user --password $pass --tenant $tenant
-$code = $LASTEXITCODE
-$ErrorActionPreference = $prev
+$subId = '@lab.CloudSubscription.Id'
 
-if ($code -ne 0) { throw "az login failed with exit code $code" }
+# Role assignments can lag behind provisioning; retry until the subscription is visible
+$loggedIn = $false
+for ($i = 1; $i -le 20 -and -not $loggedIn; $i++) {
+    $prev = $ErrorActionPreference
+    $ErrorActionPreference = 'Continue'
+    & az login --username $user --password $pass --tenant $tenant --allow-no-subscriptions 2>&1 | Out-Null
+    & az account set --subscription $subId 2>&1 | Out-Null
+    $code = $LASTEXITCODE
+    $ErrorActionPreference = $prev
+
+    if ($code -eq 0) { $loggedIn = $true } else { Start-Sleep -Seconds 15 }
+}
+
+if (-not $loggedIn) { throw "az login/subscription access failed after retries" }
 
 $prev = $ErrorActionPreference
 $ErrorActionPreference = 'Continue'
@@ -47,7 +56,7 @@ $settings = @{
             profileName        = "Ignite Lab HorizonDB"
             server             = "$fqdn"
             sslmode            = "require"
-            user               = "@lab.VirtualMachine(Win11-Pro-Base).Username"
+            user               = '@lab.VirtualMachine(Win11-Pro-Base).Username'
         }
     )
 }
@@ -72,8 +81,8 @@ $openAiSettings = [ordered]@{
 $pgSettings = [ordered]@{
     AZURE_PG_HOST    = $fqdn
     AZURE_PG_NAME    = "postgres"
-    AZURE_PG_USER    = "@lab.VirtualMachine(Win11-Pro-Base).Username"
-    AZURE_PG_PASSWORD="@lab.VirtualMachine(Win11-Pro-Base).Password"
+    AZURE_PG_USER    = '@lab.VirtualMachine(Win11-Pro-Base).Username'
+    AZURE_PG_PASSWORD= '@lab.VirtualMachine(Win11-Pro-Base).Password'
     AZURE_PG_PORT    = 5432
     AZURE_PG_SSLMODE = "require"
 }
