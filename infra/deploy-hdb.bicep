@@ -90,6 +90,23 @@ resource horizonDb 'Microsoft.HorizonDb/clusters@2026-05-01-preview' = {
 
 }
 
+// Reference the default HorizonDB pool
+resource horizonDbPool 'Microsoft.HorizonDb/clusters/pools@2026-05-01-preview' existing = {
+  parent: horizonDb
+  name: 'DefaultPool'
+}
+
+// Allow connections from all IPv4 addresses
+resource horizonDbFirewallRule 'Microsoft.HorizonDb/clusters/pools/firewallRules@2026-05-01-preview' = {
+  parent: horizonDbPool
+  name: 'AllowAll'
+  properties: {
+    startIpAddress: '0.0.0.0'
+    endIpAddress: '255.255.255.255'
+    description: 'Allow all IPv4 addresses'
+  }
+}
+
 @description('Creates a Microsoft Foundry resource.')
 resource foundry 'Microsoft.CognitiveServices/accounts@2026-07-01' = {
   name: foundryName

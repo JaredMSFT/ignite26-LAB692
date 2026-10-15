@@ -1,11 +1,11 @@
 <#
-First Displayable
-
-Create VS Code PostgreSQL Connection for HorizonDB
-Execute Script in VM
+Create VS Code Connection
+Execute Script in Virtual Machine
+Machine	Win11-Pro-Base
 Language	PowerShell
 Blocking	No
-Timeout	10 Minutes
+Delay	120 Seconds
+Timeout	5 Minutes
 Retries	0
 Error Action	Log
 #>
