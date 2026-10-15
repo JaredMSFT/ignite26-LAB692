@@ -26,7 +26,7 @@ if ($code -ne 0) { throw "az login failed with exit code $code" }
 
 $prev = $ErrorActionPreference
 $ErrorActionPreference = 'Continue'
-& $fqdn = az horizondb show --name $hdbId --resource-group $rgId --query "properties.fullyQualifiedDomainName" -o tsv
+$fqdn = az horizondb show --name $hdbId --resource-group $rgId --query "properties.fullyQualifiedDomainName" -o tsv
 $code = $LASTEXITCODE
 $ErrorActionPreference = $prev
 
