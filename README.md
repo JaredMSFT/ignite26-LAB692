@@ -72,7 +72,7 @@ Parameter groups are first-class resources in Azure and are surfaced within the 
 
     ![HorizonDB Server Parameters](img/0.3-server-parameters.png)
 
-===
+---
 
 # Part 1 - Connect to your Azure HorizonDB database using VS Code Extension for PostgreSQL
 
@@ -101,7 +101,7 @@ Parameter groups are first-class resources in Azure and are surfaced within the 
 
 **Congratulations, you just signed in to your Azure HorizonDB database using the VS Code Extension for PostgreSQL!**
 
-===
+---
 
 ## Explore the VS Code Extension for PostgreSQL dashboard
 
@@ -129,7 +129,7 @@ Parameter groups are first-class resources in Azure and are surfaced within the 
 
     ![View your query results](img/1.7-query-results.png)
 
-===
+---
 
 # Parts 2 and 3 - Data setup and agentic app development
 
