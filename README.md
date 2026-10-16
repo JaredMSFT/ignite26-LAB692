@@ -35,16 +35,16 @@ In this section, we'll open Microsoft Edge in the lab environment and sign in to
 
     ![Starting the Lab](img/0-portal.png)
 
-    > [!NOTE]
-    > If you see a sign-in pop-up, select **Not now**.
+> [!NOTE]
+> If you see a sign-in pop-up, select **Not now**.
 
 1. To sign in to the Azure portal, enter the following credentials:
 
     - Username: +++@lab.CloudPortalCredential(User1).Username+++
     - TAP: +++@lab.CloudPortalCredential(User1).TAP+++
 
-    > [!NOTE]
-    > This lab uses a Temporary Access Pass (TAP) instead of a password to sign in to Azure. If you need to access this TAP code again, use the **Resources** tab at the top of these lab instructions.
+> [!NOTE]
+> This lab uses a Temporary Access Pass (TAP) instead of a password to sign in to Azure. If you need to access this TAP code again, use the **Resources** tab at the top of these lab instructions.
 
 1. Once you've signed in to the Azure portal, select **View all resources**.
 
@@ -201,18 +201,6 @@ Pick your next step based on your learning style:
 | **[Microsoft AI Skills Navigator](https://aka.ms/ignite26-asn)** | Discover AI skills, learning paths, and resources for your next step |
 | **[Microsoft Learn](https://aka.ms/ignite26-learn)** | Official documentation and guided learning paths on these topics |
 | **[Microsoft Foundry Community](https://aka.ms/MicrosoftFoundryDiscord-Ignite26)** | Connect with other learners and experts in our Discord community |
-
-### 🌟 Microsoft Learn MCP Server
-
-<!-- Remove this section if the Microsoft Learn MCP Server is not relevant to the session. -->
-
-The Microsoft Learn MCP Server gives your AI agent direct access to Microsoft's official documentation — grounded, up-to-date answers about the topics in this session.
-
-**GitHub Copilot CLI** — Install with:
-
-```shell
-copilot plugin install microsoftdocs/mcp
-```
 
 **VS Code** — One-click install:  
 [![Install in VS Code](https://img.shields.io/badge/VS_Code-Install_Microsoft_Learn_MCP-0098FF?style=flat-square&logo=visualstudiocode&logoColor=white)](https://vscode.dev/redirect/mcp/install?name=microsoft-learn&config=%7B%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Flearn.microsoft.com%2Fapi%2Fmcp%22%7D)
