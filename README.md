@@ -1,10 +1,8 @@
-<p align="center">
-<img src="img/banner-ignite-26.png" alt="Microsoft Ignite 2026" width="100%"/>
-</p>
+![Microsoft Ignite 2026](img/banner-ignite-26.png)
 
 # [Microsoft Ignite 2026](https://ignite.microsoft.com)
 
-## 🔥@lab.Title
+## @lab.Title
 
 ### 🚀 Getting started
 
@@ -82,10 +80,6 @@ Parameter groups are first-class resources in Azure and are surfaced within the 
 
     ![Starting the Lab](img/1.1-vscode.png)
 
-1. In VS Code, the `C:\Users\LabUsers\source\repos\ignite26-LAB692` folder should already be open. If not, select **File** > **Open Folder...** and choose `C:\Users\LabUsers\source\repos\ignite26-LAB692` to open it in your workspace.
-
-    ![VS Code Explorer](img/1.2-vscode-explorer.png)
-
 1. Select the **VS Code Extension for PostgreSQL** icon in the activity bar to open the extension.
 
     ![Introducing the PostgreSQL extension](img/1.3-postgres-extension.png)
@@ -121,10 +115,10 @@ Parameter groups are first-class resources in Azure and are surfaced within the 
 
     ```sql
     SELECT
-        current_database() AS database_name,
-        current_user AS connected_user,
-        now() AS server_time,
-        version() AS postgres_version;
+    current_database() AS database_name,
+    current_user AS connected_user,
+    now() AS server_time,
+    version() AS postgres_version;
     ```
 
     ![View your query results](img/1.7-query-results.png)
@@ -147,6 +141,10 @@ An optional third notebook helps you verify server settings and configuration:
 ## Open Notebook 1 - Data setup
 
 1. In VS Code, select the **Explorer** icon in the activity bar to return to the **Explorer** view.
+
+    ![VS Code Explorer](img/1.2-vscode-explorer.png)
+
+1. The `C:\Users\LabUsers\source\repos\ignite26-LAB692` folder should already be open. If not, select **File** > **Open Folder...** and choose `C:\Users\LabUsers\source\repos\ignite26-LAB692` to open it in your workspace.
 
     ![VS Code Explorer](img/1.2-vscode-explorer.png)
 
