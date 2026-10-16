@@ -44,12 +44,12 @@ In this section, we'll open Edge browser in the lab environment and sign in to t
     > This lab uses a Temporary Access Pass (TAP) for the Azure subscription password.  If you need to access this TAP code again, use the **Resources** tab at the top of these lab instructions.
 
 1. Once logged in to the Azure Portal, select **View all resources**.
-![Starting the Lab](img/0-portal.png)
+![View all resources](img/0.1-view-all-resources.png)
 
 1. We'll be using these resources during this lab:
     - Microsoft Foundry instance
     - Azure HorizonDB Database instance
-![Starting the Lab](img/0-portal.png)
+![Azure Lab Resources](img/0.2-lab-resources.png)
 
 ---
 
@@ -60,14 +60,11 @@ Parameter groups are a new concept in HorizonDB.  Parameter groups act as contai
 Parameter groups are first-class resources in Azure and are surfaced within the specific resource group and subscription defined in their resource identifier.
 
 1. Click on the HorizonDB instance in the portal
-![Starting the Lab](img/0-portal.png)
 
 1. Expand **"Settings"** in the left navigation, and click **"Parameters"**
 
-![Starting the Lab](img/0-portal.png)
-
 1. Confirm that your parameter group has been enabled for your HorizonDB instance.
-![Starting the Lab](img/0-portal.png)
+![HorizonDB Server Parameters](img/0.3-server-parameters.png)
 
 ===
 
