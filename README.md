@@ -154,11 +154,11 @@ An optional third notebook helps you verify server settings and configuration:
 
     ![Jupyter Notebook](img/1.8-jupyter-notebook.png)
 
-1. Read each section of the notebook and follow its instructions.
-
 1. Select a Python kernel to execute the code cells in the notebook.
 
     ![Kernel Runtime](img/1.9-python-runtime.png)
+
+1. Read each section of the notebook and follow its instructions.
 
 1. Once you've selected the Python 3.11.9 kernel, you can begin running the code cells in your notebooks.
 
