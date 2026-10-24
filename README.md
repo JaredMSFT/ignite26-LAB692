@@ -114,7 +114,7 @@ Parameter groups are first-class resources in Azure and are surfaced within the 
     During this lab, most SQL queries will be run programmatically using Python and the `psycopg` package. You'll also run a few queries using the extension's query editor.
 
     ```sql
-    SELECT
+    SELECT 
     current_database() AS database_name,
     current_user AS connected_user,
     now() AS server_time,
