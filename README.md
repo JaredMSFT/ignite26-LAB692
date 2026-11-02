@@ -156,9 +156,9 @@ An optional third notebook helps you verify server settings and configuration:
 
     ![Kernel Runtime](img/1.9-python-runtime.png)
 
-1. Read each section of the notebook and follow its instructions.
-
 1. Once you've selected the Python 3.11.9 kernel, you can begin running the code cells in your notebooks.
+
+1. Read each section of the notebook and follow its instructions.
 
     ![Execute Notebook Cells](img/1.10-execute-cell-notebooks.png)
 
