@@ -9,16 +9,6 @@ Retries	0
 Error Action	Log
 #>
 
-# gh repo clone JaredMSFT/ignite26-LAB692
-
-<#
-New-Item -ItemType Directory -Force C:\temp | Out-Null
-Start-Transcript C:\temp\clone.log
-git clone -v https://github.com/JaredMSFT/ignite26-LAB692.git @lab.Variable(LabResources) 
-"exit code: $LASTEXITCODE"
-Stop-Transcript
-#>
-
 $target = '@lab.Variable(LabResources)'
 
 if (-not (Test-Path "$target\.git")) {
