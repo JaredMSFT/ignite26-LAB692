@@ -11,7 +11,7 @@ Error Action	Log
 
 $prev = $ErrorActionPreference
 $ErrorActionPreference = 'Continue'
-& py -3.11 -m ensurepip --upgrade
+& py -3.11 -m pip install --upgrade pip
 $code = $LASTEXITCODE
 $ErrorActionPreference = $prev
 
