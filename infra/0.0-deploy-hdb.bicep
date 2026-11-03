@@ -35,12 +35,14 @@ param allowedExtensions array = [
   'vector'
   'age'
   'pg_diskann'
+  'pg_durable'
   'pg_textsearch'
 ]
 
 @description('PostgreSQL shared_preload_libraries to allow on the HorizonDB cluster.')
 param sharedPreloadLibraries array = [
   'age'
+  'pg_durable'
   'pg_textsearch'
 ]
 
