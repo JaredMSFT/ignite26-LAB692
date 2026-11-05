@@ -14,16 +14,24 @@ param foundryName string = 'foundry-@lab.LabInstance.GlobalId'
 param foundryProjectName string = '${foundryName}-project'
 
 @description('The version of PostgreSQL to use.')
+@allowed([
+  '17'
+  '18'
+])
 param postgresVersion string = '17'
 
 @description('Number of vCores per node.')
+@minValue(2)
+@maxValue(192)
 param vCores int = 2
 
-@description('Number of replicas.')
-param replicaCount int = 2
+@description('Total number of nodes in the pool, including the primary.')
+@minValue(1)
+@maxValue(16)
+param nodeCount int = 2
 
 @description('Admin username for the cluster.')
-var administratorLogin = '@lab.VirtualMachine(Win11-Pro-Base).Username' //LabUser
+param administratorLogin string = '@lab.VirtualMachine(Win11-Pro-Base).Username' //LabUser
 
 @secure()
 @description('Admin password for the cluster.')
@@ -46,14 +54,18 @@ param sharedPreloadLibraries array = [
   'pg_textsearch'
 ]
 
-resource horizonDbParameterGroup 'Microsoft.HorizonDb/parameterGroups@2026-05-01-preview' = {
+resource horizonDbParameterGroup 'Microsoft.HorizonDb/parameterGroups@2026-10-01-preview' = {
   name: '${clusterName}-parameters'
   location: location
 
   properties: {
     description: 'Parameter group for ${clusterName}'
-    pgVersion: int(postgresVersion)
-    applyImmediately: true
+
+    // Enable integrated AI Model Management
+    //aiModelManagement: 'Enabled'
+    //aiModelManagement: 0 // 0 to Enable
+
+    postgreSqlVersion: postgresVersion
 
     parameters: [
       {
@@ -65,41 +77,70 @@ resource horizonDbParameterGroup 'Microsoft.HorizonDb/parameterGroups@2026-05-01
         value: join(sharedPreloadLibraries, ',')
       }
     ]
+
   }
 }
 
 @description('Creates a HorizonDB Cluster.')
-resource horizonDb 'Microsoft.HorizonDb/clusters@2026-05-01-preview' = {
+resource horizonDb 'Microsoft.HorizonDb/clusters@2026-10-01-preview' = {
   name: clusterName
   location: location
 
   properties: {
+    creationMode: 'Create'
+    postgreSqlVersion: postgresVersion
+    network: {
+      publicAccess: 'Enabled'
+    }
+  }
+}
+
+resource horizonDbPasswordAuthentication 'Microsoft.HorizonDb/clusters/authentications@2026-10-01-preview' = {
+  parent: horizonDb
+  dependsOn: [
+    horizonDbPool
+  ]
+  name: 'passwordMethod'
+  properties: {
+    state: 'Enabled'
     administratorLogin: administratorLogin
     administratorLoginPassword: administratorLoginPassword
-    createMode: 'Create'
-    vCores: vCores
-    replicaCount: replicaCount
-    version: postgresVersion
-    // Enable integrated AI Model Management
-    //aiModelManagement: 'Enabled'
-    //aiModelManagement: 0 // 0 to Enable
-    parameterGroup: {
-      //applyImmediately: true
-      id: horizonDbParameterGroup.id
+  }
+}
+
+resource horizonDbPool 'Microsoft.HorizonDb/clusters/pools@2026-10-01-preview' = {
+  parent: horizonDb
+  name: 'defaultpool'
+  properties: {
+    computeModel: {
+      type: 'Provisioned'
+      computeProcessor: 'AMD'
+      computeGeneration: 6
+      vCores: vCores
     }
 
+    nodeCount: nodeCount
+    highAvailability: {
+      mode: 'AnyZone' // 'AnyZone' | 'Disabled' | 'ZoneRedundant'
+    }
+/*
+    ParameterGroupAssignmentOnCreateNotSupported,
+    Pool creation accepts only the location-scoped default parameter group for the 
+    parent cluster's subscription, location, and PostgreSQL version, with an applyMethod of Immediate or PendingReboot. 
+    Assign custom parameter groups after creation.
+
+    parameterGroup: {
+      parameterGroupResourceId: horizonDbParameterGroup.id
+      applyMethod: 'Immediate'
+    }
+*/
+    scheduledMaintenance: {
+      maintenanceManagementType: 'System'
+    }
   }
-
 }
 
-// Reference the default HorizonDB pool
-resource horizonDbPool 'Microsoft.HorizonDb/clusters/pools@2026-05-01-preview' existing = {
-  parent: horizonDb
-  name: 'DefaultPool'
-}
-
-// Allow connections from all IPv4 addresses
-resource horizonDbFirewallRule 'Microsoft.HorizonDb/clusters/pools/firewallRules@2026-05-01-preview' = {
+resource horizonDbFirewallRule 'Microsoft.HorizonDb/clusters/pools/firewallRules@2026-10-01-preview' = {
   parent: horizonDbPool
   name: 'AllowAll'
   properties: {
