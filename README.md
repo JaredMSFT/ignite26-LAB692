@@ -56,9 +56,9 @@ In this section, we'll open Microsoft Edge in the lab environment and sign in to
 
 ---
 
-Your HorizonDB resource has been provisioned along with a **parameter group** containing the server parameter configuration for your PostgreSQL extensions and the associated allowlist details.
+Your HorizonDB resource has been provisioned along with a **parameter group** containing the server parameter configuration for your PostgreSQL extensions and the associated allowlist details. The parameter group is associated with the cluster's compute pool.
 
-Parameter groups are a new concept in HorizonDB. They act as containers for cluster configuration values that can be applied to one or more database clusters. Instead of managing configuration settings for each cluster individually, you can define them in a parameter group and associate that group with multiple clusters to ensure consistency across your environment. This lab has only one cluster, but we still need to confirm that the parameter group has been enabled.
+Parameter groups are a new concept in HorizonDB. They act as containers for PostgreSQL configuration values that can be applied to one or more compute pools. Instead of managing configuration settings for each pool individually, you can define them in a parameter group and associate that group with multiple pools to ensure consistency across your environment. This lab has only one cluster and one pool, but we still need to confirm that the parameter group has been enabled.
 
 Parameter groups are first-class resources in Azure and are surfaced within the specific resource group and subscription defined in their resource identifier.
 
@@ -170,7 +170,7 @@ An optional third notebook helps you verify server settings and configuration:
 If you're learning at your own pace:
 
 1. Clone this repository.
-2. Set up your environment using [infra/0.0-deploy-hdb.bicep](infra/0.0-deploy-hdb.bicep), then execute the four PowerShell scripts in the `infra` folder.
+2. Set up your environment using [infra/0.0-deploy-hdb.bicep](infra/0.0-deploy-hdb.bicep), then execute the PowerShell scripts in the `infra` folder in numeric order.
 3. Follow the instructions above to open the Jupyter notebooks.
 
 ### 🎯 Learning outcomes
