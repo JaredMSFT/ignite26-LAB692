@@ -11,10 +11,10 @@ Error Action	Log
 #>
 
 $subId = '@lab.CloudSubscription.Id'
-$rgId = '@lab.CloudResourceGroup(ResourceGroup1).Name'
-$hdbId = 'horizondb-@lab.LabInstance.GlobalId'
-$hdbparamsId = "$hdbId-parameters"
+$rgName = '@lab.CloudResourceGroup(ResourceGroup1).Name'
+$hdbName = 'horizondb-@lab.LabInstance.GlobalId'
+$hdbParamsName = "$hdbName-parameters"
 
-$parameterGroupId = "/subscriptions/$subId/resourceGroups/$rgId/providers/Microsoft.HorizonDb/parameterGroups/$hdbparamsId"
+$parameterGroupId = "/subscriptions/$subId/resourceGroups/$rgName/providers/Microsoft.HorizonDb/parameterGroups/$hdbParamsName"
 
-az horizondb update --name $hdbId --resource-group $rgId --parameter-group $parameterGroupId
+az horizondb update --name $hdbName --resource-group $rgName --parameter-group $parameterGroupId
