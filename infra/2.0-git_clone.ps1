@@ -11,14 +11,20 @@ Error Action	Log
 
 $target = '@lab.Variable(LabResources)'
 
-if (-not (Test-Path "$target\.git")) {
-    New-Item -ItemType Directory -Force (Split-Path $target) | Out-Null
+if (Test-Path -LiteralPath $target) {
+    Remove-Item -LiteralPath $target -Recurse -Force -ErrorAction Stop
+}
 
-    $prev = $ErrorActionPreference
+New-Item -ItemType Directory -Force (Split-Path $target) -ErrorAction Stop | Out-Null
+
+$prev = $ErrorActionPreference
+try {
     $ErrorActionPreference = 'Continue'
-    & git clone --quiet https://github.com/JaredMSFT/ignite26-LAB692.git $target
+    & git clone --quiet https://github.com/JaredMSFT/ignite26-LAB692.git "$target"
     $code = $LASTEXITCODE
-    $ErrorActionPreference = $prev
 
     if ($code -ne 0) { throw "git clone failed with exit code $code" }
+}
+finally {
+    $ErrorActionPreference = $prev
 }
