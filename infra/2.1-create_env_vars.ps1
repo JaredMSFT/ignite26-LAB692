@@ -37,8 +37,8 @@ $prev = $ErrorActionPreference
 $ErrorActionPreference = 'Continue'
 
 # ugly hack to retrieve the rw fqdn
-$fqdn = az horizondb show --name $hdbName --resource-group $rgName --query "properties.readonlyEndpoint" -o tsv
-$fqdn = $fqdn -replace "$hdbName\.ro\.", "$hdbName.rw."
+$fqdn = az horizondb show --name $hdbName --resource-group $rgName --query "properties.fullyQualifiedDomainName" -o tsv
+if ($fqdn -notmatch "\.rw\.") { $fqdn = $fqdn -replace "$hdbName\.", "$hdbName.rw." }
 
 $code = $LASTEXITCODE
 $ErrorActionPreference = $prev
