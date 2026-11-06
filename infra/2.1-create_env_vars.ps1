@@ -9,8 +9,8 @@ Retries	0
 Error Action	Log
 #>
 
-$rgId = '@lab.CloudResourceGroup(ResourceGroup1).Name'
-$hdbId = 'horizondb-@lab.LabInstance.GlobalId'
+$rgName = '@lab.CloudResourceGroup(ResourceGroup1).Name'
+$hdbName = 'horizondb-@lab.LabInstance.GlobalId'
 
 $user = '@lab.CloudPortalCredential(User1).Username'
 $pass = '@lab.CloudPortalCredential(User1).Password'
@@ -35,7 +35,11 @@ if (-not $loggedIn) { throw "az login/subscription access failed after retries" 
 
 $prev = $ErrorActionPreference
 $ErrorActionPreference = 'Continue'
-$fqdn = az horizondb show --name $hdbId --resource-group $rgId --query "properties.fullyQualifiedDomainName" -o tsv
+
+# ugly hack to retrieve the rw fqdn
+$fqdn = az horizondb show --name $hdbName --resource-group $rgName --query "properties.readonlyEndpoint" -o tsv
+$fqdn = $fqdn -replace "$hdbName\.ro\.", "$hdbName.rw."
+
 $code = $LASTEXITCODE
 $ErrorActionPreference = $prev
 
@@ -66,8 +70,8 @@ $json = $settings | ConvertTo-Json -Depth 5
 
 $aiName = 'foundry-@lab.LabInstance.GlobalId'
 
-$endpoint = az cognitiveservices account show --name $aiName --resource-group $rgId --query "properties.endpoint" -o tsv
-$key = az cognitiveservices account keys list --name $aiName --resource-group $rgId --query "key1" -o tsv
+$endpoint = az cognitiveservices account show --name $aiName --resource-group $rgName --query "properties.endpoint" -o tsv
+$key = az cognitiveservices account keys list --name $aiName --resource-group $rgName --query "key1" -o tsv
 
 $openAiSettings = [ordered]@{
     AZURE_OPENAI_ENDPOINT      = $endpoint
