@@ -12,9 +12,15 @@ Error Action	Log
 
 $subId = '@lab.CloudSubscription.Id'
 $rgName = '@lab.CloudResourceGroup(ResourceGroup1).Name'
+
 $hdbName = 'horizondb-@lab.LabInstance.GlobalId'
 $hdbParamsName = "$hdbName-parameters"
 
 $parameterGroupId = "/subscriptions/$subId/resourceGroups/$rgName/providers/Microsoft.HorizonDb/parameterGroups/$hdbParamsName"
 
+az config set extension.dynamic_install_allow_preview=true --only-show-errors
+az extension add --name horizondb --allow-preview true --upgrade --only-show-errors
+
 az horizondb update --name $hdbName --resource-group $rgName --parameter-group $parameterGroupId
+
+if ($LASTEXITCODE -ne 0) { throw "az command failed with exit code $LASTEXITCODE" }
