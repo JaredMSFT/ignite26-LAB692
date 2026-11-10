@@ -4,6 +4,8 @@
 
 ## @lab.Title
 
+Your agent is only as good as the data behind it. Join us to build a working agent that retrieves trusted context from operational PostgreSQL data in Azure HorizonDB. Create an AI pipeline, generate embeddings, combine vector and keyword retrieval, apply filters, and connect results to an agent workflow. Leave with a reusable architecture and working implementation.
+
 ### 🚀 Getting started
 
 Sign in to your lab VM with the following credentials:
