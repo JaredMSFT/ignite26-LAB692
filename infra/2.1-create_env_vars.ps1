@@ -37,8 +37,10 @@ $prev = $ErrorActionPreference
 $ErrorActionPreference = 'Continue'
 
 # ugly hack to retrieve the rw fqdn
-$fqdn = az horizondb show --name $hdbName --resource-group $rgName --query "properties.fullyQualifiedDomainName" -o tsv
-if ($fqdn -notmatch "\.rw\.") { $fqdn = $fqdn -replace "$hdbName\.", "$hdbName.rw." }
+#$fqdn = az horizondb show --name $hdbName --resource-group $rgName --query "properties.fullyQualifiedDomainName" -o tsv
+#if ($fqdn -notmatch "\.rw\.") { $fqdn = $fqdn -replace "$hdbName\.", "$hdbName.rw." }
+
+$fqdn = az rest --method get --url "https://management.azure.com/subscriptions/$subId/resourceGroups/$rgName/providers/Microsoft.HorizonDb/clusters/$hdbName/endpoints?api-version=2026-10-01-preview" --query "value[?properties.role=='ReadWrite'].properties.fullyQualifiedDomainName" --output tsv
 
 $code = $LASTEXITCODE
 $ErrorActionPreference = $prev
